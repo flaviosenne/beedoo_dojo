@@ -1,23 +1,44 @@
-export function caixaEletronico(valor_saque:number) {
+export class CaixaEletronico {
 
-    const notas_disponiveis = [100, 50, 20,10];
+    avaliablesGrade: number[]
 
-    if(notas_disponiveis.includes(valor_saque)) {
-        return valor_saque;
+    constructor(){
+        this.avaliablesGrade = [100, 50, 20,10]
     }
+
+    main (value: number): string {
     
-    if(valor_saque % 10 !==0){
-        return 'Ná há notas disponíveis para o valor informado.';
+        if(this.avaliablesGrade.includes(value)) {
+            return `Entregar 1 nota de R$${value},00`
+        }
+        
+        if(value % 10 !==0 || value < 10){
+            return 'Ná há notas disponíveis para o valor informado.'
+        }
+    
+        return this.getGrades(value)
+        
     }
 
-    let notas = []
-    notas_disponiveis.map(nota => {
-        while (valor_saque < nota) {
-            
-        }
-    })
+    getGrades(value: number): string{
+        const msg = {  grade: 0, qnt: 0, total: value }
+        
+        let result = ''
 
-    return 'Entregar 1 nota de R$100,00 e 1 nota de R$ 10,00.';
+        this.avaliablesGrade.map(grade => {
+            msg.qnt = 0
+            while (msg.total >= grade) {
+                msg.total = msg.total - grade
+                msg.qnt ++
+                msg.grade = grade
+                
+                result += `${msg.qnt} nota(s) de R$${msg.grade},00 ` 
+            }
+        })
+    
+        return 'Entregar '+result
+    }
+
 }
 
 
